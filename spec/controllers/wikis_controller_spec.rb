@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe WikisController, type: :controller do
   before(:each) do
     @request.env["devise.mapping"] = Devise.mappings[:user]
-    user = FactoryGirl.create(:user)
-    user.confirm # or set a confirmed_at inside the factory. Only necessary if you are using the "confirmable" module
-    sign_in user
+    @user = FactoryGirl.create(:user)
+    @user.confirm # or set a confirmed_at inside the factory. Only necessary if you are using the "confirmable" module
+    sign_in @user
 
-    @my_wiki = Wiki.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, private:false, user: user)
+    @my_wiki = Wiki.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, private:false, user: @user)
   end
 
 
@@ -37,6 +37,22 @@ RSpec.describe WikisController, type: :controller do
      it "instantiates @wiki" do
        get :new
        expect(assigns(:wiki)).not_to be_nil
+     end
+   end
+
+   describe "POST create" do
+     it "increases the number of Wiki by 1" do
+       expect{post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false, user: @user}}.to change(Wiki,:count).by(1)
+     end
+
+     it "assigns the new wiki to @wiki" do
+       post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false, user: @user}
+       expect(assigns(:wiki)).to eq Wiki.last
+     end
+
+     it "redirects to the new wiki" do
+       post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph, private: false, user: @user}
+       expect(response).to redirect_to Wiki.last
      end
    end
 
