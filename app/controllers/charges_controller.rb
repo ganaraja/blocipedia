@@ -22,11 +22,11 @@ class ChargesController < ApplicationController
        description: "BigMoney Membership - #{current_user.email}",
        currency: 'usd'
      )
-
+     current_user.premium!
      flash[:notice] = "Thanks for all the money, #{current_user.email}! Feel free to pay me again."
      redirect_to user_path(current_user) # or wherever
-     current_user.premium!
-     
+
+
      # Stripe will send back CardErrors, with friendly messages
      # when something goes wrong.
      # This `rescue block` catches and displays those errors.
