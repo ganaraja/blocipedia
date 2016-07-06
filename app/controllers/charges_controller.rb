@@ -34,4 +34,9 @@ class ChargesController < ApplicationController
        flash[:alert] = e.message
        redirect_to new_charge_path
   end
+
+  def downgrade
+    current_user.role = :standard
+    current_user.save
+  end
 end

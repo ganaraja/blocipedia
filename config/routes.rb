@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   get 'about' => 'welcome#about'
 
+  get 'downgrade' => 'charges#downgrade'
 
   root 'welcome#index'
 
