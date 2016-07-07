@@ -36,7 +36,10 @@ class ChargesController < ApplicationController
   end
 
   def downgrade
-    current_user.role = :standard
-    current_user.save
+    current_user.standard!
+    if current_user.save
+      Wiki.where(user_id: current_user.id).update_all(private:false)
+    end
+    redirect_to :back
   end
 end
