@@ -1,0 +1,16 @@
+<div class="col-md-6">
+  <li><%= link_to "New Wiki", new_wiki_path %></li>
+</div>
+
+<div class="col-md-8">
+   <h1>All Wikis</h1>
+   <% @wikis.each do |wiki| %>
+   <div class="media">
+     <div class="media-body">
+       <h4 class="media-heading">
+         <p><%= link_to wiki.title, wiki_path(wiki.id) %></p>
+       </h4>
+     </div>
+  </div>
+   <% end %>
+</div>

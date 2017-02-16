@@ -1,8 +1,19 @@
 Rails.application.routes.draw do
-  get 'welcome/index'
 
-  get 'welcome/about'
 
+
+
+  resources :charges, only: [:new, :create]
+
+  devise_for :users
+
+  resources :wikis do
+    resources :collaborators, only: [:index, :create, :destroy]
+  end
+
+  get 'about' => 'welcome#about'
+
+  get 'downgrade' => 'charges#downgrade'
 
   root 'welcome#index'
 
